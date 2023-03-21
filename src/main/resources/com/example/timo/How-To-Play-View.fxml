@@ -1,14 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.timo.HowToPlayController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="690.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.timo.HowToPlayController">
+   <children>
+      <Button fx:id="BackButton" layoutX="696.0" layoutY="25.0" mnemonicParsing="false" onAction="#onBackButtonClick" text="Back" />
+      <Label layoutX="318.0" layoutY="14.0" text="How To Play">
+         <font>
+            <Font name="Algerian" size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="166.0" layoutY="45.0" prefHeight="631.0" prefWidth="441.0" text="King: The king is the most important piece in chess.  It can move &#10;one square in any direction .vertically,  horizontally, or diagonally.&#10;The king is not allowed  to move into a square that is attacked by&#10;an  opponent's piece.&#10;&#10;Queen: The queen is the most powerful piece in chess. It can move &#10;any number of squares in any  direction vertically, horizontally, or &#10;diagonally.&#10;&#10;Rook: The rook can move any number of squares horizontally or &#10;vertically. It is unable to move  diagonally.&#10;&#10;Bishop: The bishop can move any number of squares diagonally.  &#10;It is unable to move horizontally or  vertically.&#10;&#10;Knight: The knight is unique in that it moves in an  L-shape pattern .&#10;two squares in any direction, followed  by one square perpendicular &#10;to that.  The knight can  jump over other pieces.&#10;&#10;Pawn: The pawn is the least powerful piece on the chessboard. It can &#10;only move forward, one square at a time. On its first move, it can &#10;move two squares forward. The pawn captures other pieces by &#10;moving diagonally one square forward. Pawns can also perform a &#10;special move called &quot;en passant&quot; under certain circumstances, and &#10;can be promoted to any other piece if it reaches the opponent's back&#10;rank.&#10;&#10;These are just the basic rules for each chess piece. There are additional&#10;rules that govern their movements and interactions with other pieces, &#10;but these should be enough to get started.">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="113.0" fitWidth="154.0" layoutX="14.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../pics/blackKing.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="113.0" fitWidth="154.0" layoutX="584.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../pics/whiteQueen.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="113.0" fitWidth="154.0" layoutX="14.0" layoutY="208.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../pics/blackRook.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="113.0" fitWidth="154.0" layoutX="594.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../pics/whiteBishop.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="113.0" fitWidth="154.0" layoutX="14.0" layoutY="338.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../pics/blackKnight.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="113.0" fitWidth="154.0" layoutX="594.0" layoutY="448.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../pics/whitePawn.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="51.0" fitWidth="147.0" layoutX="14.0" layoutY="615.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../pics/pieces.png" />
+         </image>
+      </ImageView>
+   </children>
 </AnchorPane>

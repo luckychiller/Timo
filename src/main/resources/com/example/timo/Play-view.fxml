@@ -9,8 +9,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="648.0" prefWidth="752.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.timo.PlayController">
-    <GridPane fx:id="GridArray" gridLinesVisible="true" layoutX="104.0" layoutY="101.0" prefHeight="500.0" prefWidth="550.0">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="690.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.timo.PlayController">
+    <GridPane fx:id="GridArray" gridLinesVisible="true" layoutX="104.0" layoutY="101.0" onMouseClicked="#onBoardClicked" prefHeight="500.0" prefWidth="550.0">
       <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -41,7 +41,7 @@
    <Label layoutX="693.0" layoutY="84.0" text="moves" />
    <Label fx:id="madeMoveList" layoutX="683.0" layoutY="98.0" prefHeight="506.0" prefWidth="59.0" text="netx move" textAlignment="CENTER" />
    <RadioButton fx:id="BlackTurn" layoutX="104.0" layoutY="51.0" mnemonicParsing="false" text="To Move" />
-   <RadioButton fx:id="WhiteTurn" layoutX="587.0" layoutY="621.0" mnemonicParsing="false" text="To Move" />
+   <RadioButton fx:id="WhiteTurn" layoutX="591.0" layoutY="617.0" mnemonicParsing="false" text="To Move" />
    <Label layoutX="90.0" layoutY="127.0" text="8" />
    <Label layoutX="659.0" layoutY="127.0" text="8" />
    <Label layoutX="90.0" layoutY="187.0" text="7" />

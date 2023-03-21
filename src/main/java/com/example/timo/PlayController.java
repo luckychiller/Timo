@@ -9,18 +9,54 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+
 import java.io.IOException;
 import javax.swing.*;
 
 public class PlayController extends Pane {
-    private final StackPane [][] GridBoard = new StackPane[8][8];
     private final ImageView[][] PieceHolder=new ImageView[8][8];
+    private final StackPane[][] stackPanes=new StackPane[8][8];
+    private final char[][] boardRep=new char[8][8];
+    private char[] pieceLocation=new char[2];
+
+    @FXML
+    private Button Back;
+    @FXML
+    private Button StartGame;
+    @FXML
+    private GridPane GridArray;
+    @FXML
+    private RadioButton WhiteTurn;
+    @FXML
+    private RadioButton BlackTurn;
+    @FXML
+    private Label madeMoveList;
+
+    private final String[] pieceImages = {
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/whiteRook.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/whiteKnight.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/whiteBishop.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/whiteQueen.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/whiteKing.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/whitePawn.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/blackRook.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/blackKnight.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/blackBishop.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/blackQueen.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/blackKing.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/BlackPawn.png"
+    };
+    // Array of file paths for each piece image, ordered by piece type
+
+    private static final int BOARD_SIZE = 8;
     private boolean inQuire() {
         JFrame frame = new JFrame("Popup App");
         frame.setSize(300, 200);
@@ -35,27 +71,127 @@ public class PlayController extends Pane {
         } else {
             loadLastGame =false;
             System.out.println("Loading new game...");
-            madeMoveList.setText("no move sofar");
+            madeMoveList.setText("----------\n");
         }
         frame.setVisible(false);
         frame.dispose();
         return loadLastGame;
     }
+    private void displayGame(String GameString) {
+        String[] fenparts= GameString.split(" ");
+        String[] boardRows = fenparts[0].split("/");
+        // Split the FEN string to get the board layout
+
+
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            String boardRow = boardRows[i];
+            // Get the row of the board, reversed for JavaFX coordinate system
+            int cellpos=0;
+            for (int j = 0; j < boardRow.length(); j++) {
+                char boardChar = boardRow.charAt(j);
+                // Get the character representing the piece at the current position
+
+                if (Character.isDigit(boardChar)) {
+                    // If the character represents an empty space, skip it
+                    int numSpaces = Character.getNumericValue(boardChar);
+                    cellpos=cellpos+numSpaces;
+                    //continue;
+                }
+                else {
+                    int index = 0;
+                    if (Character.isUpperCase(boardChar)) {
+                        // If the character represents a white piece, use index 0-5
+                        index = "RNBQKP".indexOf(boardChar);
+                        PieceHolder[i][cellpos].setImage(new Image(pieceImages[index]));
+                        boardRep[i][cellpos]=boardChar;
+                        cellpos=cellpos+1;
+                    }
+                    else if (Character.isLowerCase(boardChar)){
+                        // If the character represents a black piece, use index 6-11
+                        index = "rnbqkp".indexOf(boardChar) + 6;
+                        PieceHolder[i][cellpos].setImage(new Image(pieceImages[index]));
+                        boardRep[i][cellpos]=boardChar;
+                        cellpos=cellpos+1;
+                    }
+                    // Set the image of the ImageView based on the piece type
+                }
+            }
+        }
+    }
     @FXML
-    private Button Back;
+    protected void OnStartGameClicked() {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                stackPanes[row][col] = new StackPane();
+                GridArray.setRowIndex(stackPanes[row][col], row);
+                GridArray.setColumnIndex(stackPanes[row][col], col);
+                GridArray.getChildren().add(stackPanes[row][col]);
+                PieceHolder[row][col] = new ImageView();
+                PieceHolder[row][col].setPreserveRatio(true);
+                PieceHolder[row][col].setFitHeight(62.5);
+                PieceHolder[row][col].setFitWidth(68.75);
+                stackPanes[row][col].getChildren().add(PieceHolder[row][col]);
+                boardRep[row][col]='-';
+            }
+        }
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                if((row+col)%2==0){
+                    stackPanes[row][col].setStyle("-fx-background-color: brown;");
+                }
+                else{
+                    stackPanes[row][col].setStyle("-fx-background-color: white;");
+                }
+            }
+        }
+        boolean bit= inQuire();
+        if (bit) {
+            String savedGame = "8/4R2p/6pk/3P4/1P5q/5p2/r4P2/4QBK1 w - - 0 19";
+            displayGame(savedGame);
+            WhiteTurn.setSelected(true);
+            BlackTurn.setSelected(false);
+        }
+        else {
+            String newGameString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+            displayGame(newGameString);
+            WhiteTurn.setSelected(true);
+            BlackTurn.setSelected(false);
+        }
+    }
     @FXML
-    private Button StartGame;
+    public void onBoardClicked(MouseEvent event){
+        ChessPiece piece = (ChessPiece) event.getSource();
+        int row = GridArray.getRowIndex(piece);
+        int col = GridArray.getColumnIndex(piece);
+        System.out.println(row+" <-> "+ col+"\n");
+    }
     @FXML
-    private GridPane GridArray;
+    public void onPiecePressed(MouseEvent event) {
+        ChessPiece piece = (ChessPiece) event.getSource();
+        int row = GridArray.getRowIndex(piece);
+        int col = GridArray.getColumnIndex(piece);
+        // Save initial location of the piece
+
+        Dragboard dragboard = piece.startDragAndDrop(TransferMode.MOVE);
+        ClipboardContent content = new ClipboardContent();
+        content.putImage(piece.getImage());
+        dragboard.setContent(content);
+        event.consume();
+    }
     @FXML
-    private RadioButton WhiteTurn;
-    @FXML
-    private RadioButton BlackTurn;
-    @FXML
-    private Label madeMoveList;
+    public void onSquareDropped(DragEvent event) {
+        ChessPiece piece = (ChessPiece) event.getGestureSource();
+        int row = GridArray.getRowIndex(piece);
+        int col = GridArray.getColumnIndex(piece);
+        // Calculate new location of the piece based on the square it was dropped on
+        // Update the piece's location and the chessboard
+        event.setDropCompleted(true);
+        event.consume();
+    }
     @FXML
     protected void onBackButtonClick(ActionEvent event) throws IOException {
         System.out.println("Saving present game...");
+        //SaveThePresentGameString();
         System.out.println("Done");
         Parent root = FXMLLoader.load(getClass().getResource("Timo-view.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -64,100 +200,4 @@ public class PlayController extends Pane {
         stage.setScene(scene);
         stage.show();
     }
-    @FXML
-    protected void OnStartGameClicked() {
-        boolean bit= inQuire();
-        if (bit)
-        {WhiteTurn.setSelected(true);
-        BlackTurn.setSelected(false);}
-        else {WhiteTurn.setSelected(false);
-            BlackTurn.setSelected(true);}
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                StackPane stackPane = new StackPane();
-                GridArray.setRowIndex(stackPane, row);
-                GridArray.setColumnIndex(stackPane, col);
-                ImageView imageView = new ImageView();
-                stackPane.getChildren().add(imageView);
-                PieceHolder[row][col]=imageView;
-                GridBoard[row][col] = stackPane;
-                GridArray.getChildren().add(stackPane);
-            }
-        }
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                if((row+col)%2==0){
-                    GridBoard[row][col].setStyle("-fx-background-color: brown;");
-                }
-                else{
-                    GridBoard[row][col].setStyle("-fx-background-color: white;");
-                }
-            }
-        }
-    }
-
-    /*private static final int SQUARE_SIZE = 64;
-    private Rectangle[][] squares = new Rectangle[8][8];
-    private Image[][] pieces = new Image[8][8];
-
-
-    StackPane stackPane = new StackPane();
-stackPane.setStyle("-fx-background-color: red;");
-    public PlayController() {
-        // Create the board squares
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                Rectangle square = new Rectangle(SQUARE_SIZE, SQUARE_SIZE);
-                square.setFill((row + col) % 2 == 0 ? Color.WHITE : Color.LIGHTGRAY);
-                square.setStroke(Color.BLACK);
-                squares[row][col] = square;
-                getChildren().add(square);
-            }
-        }
-
-        // Load the piece images
-        // Assumes that the images are named "wp.png", "bp.png", "wn.png", etc.
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                String filename = "";
-                if (row == 1) {
-                    filename = "wp.png";
-                } else if (row == 6) {
-                    filename = "bp.png";
-                } else if (row == 0 || row == 7) {
-                    if (col == 0 || col == 7) {
-                        filename = "wr.png";
-                    } else if (col == 1 || col == 6) {
-                        filename = "wn.png";
-                    } else if (col == 2 || col == 5) {
-                        filename = "wb.png";
-                    } else if (col == 3) {
-                        filename = "wq.png";
-                    } else {
-                        filename = "wk.png";
-                    }
-                }
-                if (!filename.equals("")) {
-                    Image image = new Image(getClass().getResourceAsStream(filename));
-                    ImageView imageView = new ImageView(image);
-                    imageView.setFitWidth(SQUARE_SIZE);
-                    imageView.setFitHeight(SQUARE_SIZE);
-                    pieces[row][col] = image;
-                    getChildren().add(imageView);
-                    imageView.setLayoutX(col * SQUARE_SIZE);
-                    imageView.setLayoutY(row * SQUARE_SIZE);
-                }
-            }
-        }
-
-        // Handle mouse clicks on the board squares
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                Rectangle square = squares[row][col];
-                square.setOnMouseClicked(event -> {
-                    // TODO: Handle piece moves
-                });
-            }
-        }
-    }*/
 }
