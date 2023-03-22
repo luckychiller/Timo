@@ -26,7 +26,7 @@ public class AboutController {
     protected void onBackButtonClick(ActionEvent event) throws IOException {
         root= FXMLLoader.load(getClass().getResource("Timo-view.fxml"));
         stage=(Stage)((Node)event.getSource()).getScene().getWindow();
-        scene=new Scene(root,750,610);
+        scene=new Scene(root,760,690);
         stage.setTitle("Timo");
         stage.setScene(scene);
         stage.show();

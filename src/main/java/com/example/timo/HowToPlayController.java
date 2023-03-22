@@ -19,7 +19,7 @@ public class HowToPlayController {
         System.out.println("Done");
         Parent root = FXMLLoader.load(getClass().getResource("Timo-view.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 750, 610);
+        Scene scene = new Scene(root, 760, 690);
         stage.setTitle("Timo");
         stage.setScene(scene);
         stage.show();

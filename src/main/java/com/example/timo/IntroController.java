@@ -37,7 +37,7 @@ public class IntroController {
         Hidden_Label.setText("No Levels so far");
         root= FXMLLoader.load(getClass().getResource("Play-view.fxml"));
         stage=(Stage)((Node)event.getSource()).getScene().getWindow();
-        scene=new Scene(root,750,610);
+        scene=new Scene(root,760,690);
         stage.setTitle("Timo ->Play");
         stage.setScene(scene);
         stage.show();
@@ -47,7 +47,7 @@ public class IntroController {
         Hidden_Label.setText("No data so far");
         root= FXMLLoader.load(getClass().getResource("Statistics-view.fxml"));
         stage=(Stage)((Node)event.getSource()).getScene().getWindow();
-        scene=new Scene(root,750,610);
+        scene=new Scene(root,760,690);
         stage.setTitle("Timo ->Statistics");
         stage.setScene(scene);
         stage.show();
@@ -57,7 +57,7 @@ public class IntroController {
         Hidden_Label.setText("No idea so far");
         root= FXMLLoader.load(getClass().getResource("How-To-Play-view.fxml"));
         stage=(Stage)((Node)event.getSource()).getScene().getWindow();
-        scene=new Scene(root,750,610);
+        scene=new Scene(root,760,690);
         stage.setTitle("Timo -> How to play");
         stage.setScene(scene);
         stage.show();
@@ -67,7 +67,7 @@ public class IntroController {
         Hidden_Label.setText("Its the GIANTS");
         root= FXMLLoader.load(getClass().getResource("About-view.fxml"));
         stage=(Stage)((Node)event.getSource()).getScene().getWindow();
-        scene=new Scene(root,750,610);
+        scene=new Scene(root,760,690);
         stage.setTitle("Timo -> About");
         stage.setScene(scene);
         stage.show();

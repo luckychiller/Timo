@@ -16,8 +16,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
-
 import java.io.IOException;
 import javax.swing.*;
 
@@ -27,7 +25,6 @@ public class PlayController extends Pane {
     private final char[][] boardRep=new char[8][8];
     private char[] pieceLocation=new char[2];
 
-    @FXML
     private Button Back;
     @FXML
     private Button StartGame;
@@ -118,20 +115,29 @@ public class PlayController extends Pane {
             }
         }
     }
+    public void RespondToClickedCell(int Row,int Col) {
+
+    }
     @FXML
     protected void OnStartGameClicked() {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 stackPanes[row][col] = new StackPane();
+                boardRep[row][col]='-';
+                PieceHolder[row][col] = new ImageView();
                 GridArray.setRowIndex(stackPanes[row][col], row);
                 GridArray.setColumnIndex(stackPanes[row][col], col);
                 GridArray.getChildren().add(stackPanes[row][col]);
-                PieceHolder[row][col] = new ImageView();
                 PieceHolder[row][col].setPreserveRatio(true);
                 PieceHolder[row][col].setFitHeight(62.5);
                 PieceHolder[row][col].setFitWidth(68.75);
                 stackPanes[row][col].getChildren().add(PieceHolder[row][col]);
-                boardRep[row][col]='-';
+                int finalRow=row;
+                int finalCol=col;
+                stackPanes[row][col].setOnMouseClicked(event -> {
+                    System.out.printf("Cell (%d, %d) clicked\n", finalRow, finalCol);
+                    RespondToClickedCell(finalRow,finalCol);
+                });
             }
         }
         for (int row = 0; row < 8; row++) {
