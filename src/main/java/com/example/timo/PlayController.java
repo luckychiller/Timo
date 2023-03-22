@@ -23,7 +23,7 @@ public class PlayController extends Pane {
     private final ImageView[][] PieceHolder=new ImageView[8][8];
     private final StackPane[][] stackPanes=new StackPane[8][8];
     private final char[][] boardRep=new char[8][8];
-    private char[] pieceLocation=new char[2];
+    private final char[][] suggestedMove=new char[8][8];
 
     private Button Back;
     @FXML
@@ -116,7 +116,16 @@ public class PlayController extends Pane {
         }
     }
     public void RespondToClickedCell(int Row,int Col) {
-
+        if(boardRep[Row][Col]!='-') {
+            ChessPiece selectedPiece = new ChessPiece(PieceHolder[Row][Col].getImage(), Row, Col, boardRep[Row][Col]);
+            char [][] arrr =selectedPiece.getPossibleMoves(boardRep[Row][Col],Row,Col,boardRep);
+            for(int i=0;i<BOARD_SIZE;i++){
+                for(int j=0;j<BOARD_SIZE;j++){
+                    suggestedMove[i][j]=arrr[i][j];
+                    //stackPanes[i][j].
+                }
+            }
+        }
     }
     @FXML
     protected void OnStartGameClicked() {
@@ -170,29 +179,6 @@ public class PlayController extends Pane {
         int row = GridArray.getRowIndex(piece);
         int col = GridArray.getColumnIndex(piece);
         System.out.println(row+" <-> "+ col+"\n");
-    }
-    @FXML
-    public void onPiecePressed(MouseEvent event) {
-        ChessPiece piece = (ChessPiece) event.getSource();
-        int row = GridArray.getRowIndex(piece);
-        int col = GridArray.getColumnIndex(piece);
-        // Save initial location of the piece
-
-        Dragboard dragboard = piece.startDragAndDrop(TransferMode.MOVE);
-        ClipboardContent content = new ClipboardContent();
-        content.putImage(piece.getImage());
-        dragboard.setContent(content);
-        event.consume();
-    }
-    @FXML
-    public void onSquareDropped(DragEvent event) {
-        ChessPiece piece = (ChessPiece) event.getGestureSource();
-        int row = GridArray.getRowIndex(piece);
-        int col = GridArray.getColumnIndex(piece);
-        // Calculate new location of the piece based on the square it was dropped on
-        // Update the piece's location and the chessboard
-        event.setDropCompleted(true);
-        event.consume();
     }
     @FXML
     protected void onBackButtonClick(ActionEvent event) throws IOException {
