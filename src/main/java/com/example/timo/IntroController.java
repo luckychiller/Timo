@@ -30,11 +30,7 @@ public class IntroController {
     private Button About;
 
     @FXML
-    private Label Hidden_Label;
-
-    @FXML
     protected void onPlayButtonClick(ActionEvent event) throws IOException {
-        Hidden_Label.setText("No Levels so far");
         root= FXMLLoader.load(getClass().getResource("Play-view.fxml"));
         stage=(Stage)((Node)event.getSource()).getScene().getWindow();
         scene=new Scene(root,760,690);
@@ -44,7 +40,6 @@ public class IntroController {
     }
     @FXML
     protected void onStatisticsButtonClick(ActionEvent event) throws IOException {
-        Hidden_Label.setText("No data so far");
         root= FXMLLoader.load(getClass().getResource("Statistics-view.fxml"));
         stage=(Stage)((Node)event.getSource()).getScene().getWindow();
         scene=new Scene(root,760,690);
@@ -54,7 +49,6 @@ public class IntroController {
     }
     @FXML
     protected void onHowToPlayButtonClick(ActionEvent event) throws IOException {
-        Hidden_Label.setText("No idea so far");
         root= FXMLLoader.load(getClass().getResource("How-To-Play-view.fxml"));
         stage=(Stage)((Node)event.getSource()).getScene().getWindow();
         scene=new Scene(root,760,690);
@@ -64,7 +58,6 @@ public class IntroController {
     }
     @FXML
     protected void onAboutButtonClick(ActionEvent event) throws IOException {
-        Hidden_Label.setText("Its the GIANTS");
         root= FXMLLoader.load(getClass().getResource("About-view.fxml"));
         stage=(Stage)((Node)event.getSource()).getScene().getWindow();
         scene=new Scene(root,760,690);

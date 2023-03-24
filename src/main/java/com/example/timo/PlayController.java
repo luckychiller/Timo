@@ -16,6 +16,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.paint.Color;
 import java.io.IOException;
 import javax.swing.*;
 
@@ -24,7 +29,7 @@ public class PlayController extends Pane {
     private final StackPane[][] stackPanes=new StackPane[8][8];
     private final char[][] boardRep=new char[8][8];
     private final char[][] suggestedMove=new char[8][8];
-
+    private final int[] spirepiece=new int[2];
     private Button Back;
     @FXML
     private Button StartGame;
@@ -116,19 +121,42 @@ public class PlayController extends Pane {
         }
     }
     public void RespondToClickedCell(int Row,int Col) {
-        if(boardRep[Row][Col]!='-') {
+        if (boardRep[Row][Col] != '-') {
+            spirepiece[0] = Row;
+            spirepiece[1] = Col;
             ChessPiece selectedPiece = new ChessPiece(PieceHolder[Row][Col].getImage(), Row, Col, boardRep[Row][Col]);
-            char [][] arrr =selectedPiece.getPossibleMoves(boardRep[Row][Col],Row,Col,boardRep);
-            for(int i=0;i<BOARD_SIZE;i++){
-                for(int j=0;j<BOARD_SIZE;j++){
-                    suggestedMove[i][j]=arrr[i][j];
+            char[][] arrr = selectedPiece.getPossibleMoves(boardRep[Row][Col], Row, Col, boardRep);
+            for (int i = 0; i < BOARD_SIZE; i++) {
+                for (int j = 0; j < BOARD_SIZE; j++) {
+                    suggestedMove[i][j] = arrr[i][j];
                     //stackPanes[i][j].
+                    if (arrr[i][j] == '*') {
+                        stackPanes[i][j].setBorder(new Border(new BorderStroke(Color.GREEN, BorderStrokeStyle.DASHED, null, new BorderWidths(3))));
+                    }
+                }
+            }
+        } else {
+            if (spirepiece[0] != -1 && spirepiece[1] != -1) {
+                PieceHolder[Row][Col].setImage(PieceHolder[spirepiece[0]][spirepiece[1]].getImage());
+                PieceHolder[spirepiece[0]][spirepiece[1]].setImage(null);
+            }
+            spirepiece[0] = -1;
+            spirepiece[1] = -1;
+            for (int i = 0; i < BOARD_SIZE; i++) {
+                for (int j = 0; j < BOARD_SIZE; j++) {
+                    if (suggestedMove[i][j] == '*') {
+                        stackPanes[i][j].setBorder(new Border(new BorderStroke(null, BorderStrokeStyle.NONE, null, null)));
+                        suggestedMove[i][j] = '-';
+                    }
                 }
             }
         }
     }
+
     @FXML
     protected void OnStartGameClicked() {
+        spirepiece[0]=-1;
+        spirepiece[1]=-1;
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 stackPanes[row][col] = new StackPane();
@@ -187,7 +215,7 @@ public class PlayController extends Pane {
         System.out.println("Done");
         Parent root = FXMLLoader.load(getClass().getResource("Timo-view.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 750, 610);
+        Scene scene = new Scene(root, 760, 690);
         stage.setTitle("Timo");
         stage.setScene(scene);
         stage.show();
