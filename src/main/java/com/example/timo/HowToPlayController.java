@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -27,25 +26,36 @@ public class HowToPlayController {
             "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/blackBishop.png",
             "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/blackQueen.png",
             "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/blackKing.png",
-            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/BlackPawn.png"
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/BlackPawn.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/pieces.png"
     };
     @FXML
-    private StackPane King;
+    private ImageView King;
     @FXML
-    private StackPane Queen;
+    private ImageView Queen;
     @FXML
-    private StackPane knight;
+    private ImageView knight;
     @FXML
-    private StackPane bishop;
+    private ImageView bishop;
     @FXML
-    private StackPane rook;
+    private ImageView rook;
     @FXML
-    private StackPane pawn;
+    private ImageView pawn;
     @FXML
-    private StackPane alll;
+    private ImageView alll;
 
     @FXML
     private Button BackButton;
+    @FXML
+    void displayPieces(){
+        alll.setImage(new Image(pieceImages[12]));
+        pawn.setImage(new Image(pieceImages[5]));
+        rook.setImage(new Image(pieceImages[6]));
+        bishop.setImage(new Image(pieceImages[2]));
+        knight.setImage(new Image(pieceImages[7]));
+        Queen.setImage(new Image(pieceImages[3]));
+        King.setImage(new Image(pieceImages[10]));
+    }
     @FXML
     protected void onBackButtonClick(ActionEvent event) throws IOException {
         System.out.println("Done");
