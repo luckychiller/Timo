@@ -32,6 +32,7 @@ public class PlayController extends Pane {
     private static final int BOARD_SIZE = 8;
     private int[] spirepiece=new int[2];
     private static int Whotomove=0;
+    ChessEngine robot=null;
     private int PlayMode;
     private int startConst=0;
     @FXML
@@ -114,6 +115,11 @@ public class PlayController extends Pane {
     private void displayGame(String GameString) {
         String[] fenparts= GameString.split(" ");
         String[] boardRows = fenparts[0].split("/");
+        for(int i=0;i<BOARD_SIZE;i++){
+            for(int j=0;j<BOARD_SIZE;j++){
+                PieceHolder[i][j].setImage(null);
+            }
+        }
         for (int i = 0; i < BOARD_SIZE; i++) {
             String boardRow = boardRows[i];
             int cellpos=0;
@@ -150,7 +156,10 @@ public class PlayController extends Pane {
             BlackTurn.setSelected(true);
         }
     }
-    public void RespondToClickedCell(int Row,int Col) {
+    public void RespondToClickedCell(int Row,int Col) throws Exception {
+        String gmMode=GameMode.getValue();
+        if(gmMode=="Engine Vs Engine"){onComboBoxTriggered();return;}
+        if(gmMode=="Human Vs Engine" && Whotomove%2==1){onComboBoxTriggered();return;}
         if (boardRep[Row][Col] != '-') {
             spirepiece[0] = Row;
             spirepiece[1] = Col;
@@ -166,16 +175,7 @@ public class PlayController extends Pane {
             }
         } else {
             if (spirepiece[0] != -1 && spirepiece[1] != -1) {
-                PieceHolder[Row][Col].setImage(PieceHolder[spirepiece[0]][spirepiece[1]].getImage());
-                PieceHolder[spirepiece[0]][spirepiece[1]].setImage(null);
-                Whotomove++;
-                if(Whotomove%2==0){
-                    WhiteTurn.setSelected(true);
-                    BlackTurn.setSelected(false);
-                } else {
-                    WhiteTurn.setSelected(false);
-                    BlackTurn.setSelected(true);
-                }
+                MakeMove(spirepiece[0],spirepiece[1],Row,Col);
             }
             spirepiece[0] = -1;
             spirepiece[1] = -1;
@@ -189,45 +189,60 @@ public class PlayController extends Pane {
             }
         }
         System.out.println();
+        onComboBoxTriggered();
     }
     @FXML
-    protected void OnStartGameClicked() {
+    protected void OnStartGameClicked() throws Exception {
+        robot=new ChessEngine("D:/Documents/Collection/stockfish_15.1_win_x64_avx2/stockfish.exe");
         spirepiece[0]=-1;
         spirepiece[1]=-1;
-        GameMode.getItems().addAll("Human Vs Human","Human Vs Engine","Engine Vs Engine");
-        GameMode.setValue("Human Vs Human");
-        GameMode.setOnAction(e -> {
-            String selectedOption = GameMode.getValue();
-            System.out.println("Selected option: " + selectedOption);
-        });
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                stackPanes[row][col] = new StackPane();
-                boardRep[row][col]='-';
-                PieceHolder[row][col] = new ImageView();
-                GridArray.setRowIndex(stackPanes[row][col], row);
-                GridArray.setColumnIndex(stackPanes[row][col], col);
-                GridArray.getChildren().add(stackPanes[row][col]);
-                PieceHolder[row][col].setPreserveRatio(true);
-                PieceHolder[row][col].setFitHeight(62.5);
-                PieceHolder[row][col].setFitWidth(68.75);
-                stackPanes[row][col].getChildren().add(PieceHolder[row][col]);
-                int finalRow=row;
-                int finalCol=col;
-                stackPanes[row][col].setOnMouseClicked(event -> {
-                    RespondToClickedCell(finalRow,finalCol);
-                });
-            }
-        }
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                if((row+col)%2==0){
-                    stackPanes[row][col].setStyle("-fx-background-color: brown;");
+        if(startConst==0) {
+            GameMode.getItems().addAll("Human Vs Human", "Human Vs Engine", "Engine Vs Engine");
+            GameMode.setValue("Human Vs Human");
+            GameMode.setOnAction(e -> {
+                String selectedOption = GameMode.getValue();
+                System.out.println("Selected option: " + selectedOption);
+                if (selectedOption == "Human Vs Human") {
+                    PlayMode = 0;
+                } else if (selectedOption == "Human Vs Engine") {
+                    PlayMode = 1;
+                } else if (selectedOption == "Engine Vs Engine") {
+                    PlayMode = 2;
                 }
-                else{
-                    stackPanes[row][col].setStyle("-fx-background-color: white;");
+            });
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    stackPanes[row][col] = new StackPane();
+                    boardRep[row][col] = '-';
+                    PieceHolder[row][col] = new ImageView();
+                    GridArray.setRowIndex(stackPanes[row][col], row);
+                    GridArray.setColumnIndex(stackPanes[row][col], col);
+                    GridArray.getChildren().add(stackPanes[row][col]);
+                    PieceHolder[row][col].setPreserveRatio(true);
+                    PieceHolder[row][col].setFitHeight(62.5);
+                    PieceHolder[row][col].setFitWidth(68.75);
+                    stackPanes[row][col].getChildren().add(PieceHolder[row][col]);
+                    int finalRow = row;
+                    int finalCol = col;
+                    stackPanes[row][col].setOnMouseClicked(event -> {
+                        try {
+                            RespondToClickedCell(finalRow, finalCol);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
                 }
             }
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    if ((row + col) % 2 == 0) {
+                        stackPanes[row][col].setStyle("-fx-background-color: brown;");
+                    } else {
+                        stackPanes[row][col].setStyle("-fx-background-color: white;");
+                    }
+                }
+            }
+            startConst++;
         }
         boolean bit= inQuire();
         if (bit) {
@@ -240,6 +255,7 @@ public class PlayController extends Pane {
             String newGameString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
             displayGame(newGameString);
         }
+        onComboBoxTriggered();
     }
     @FXML
     protected void onBackButtonClick(ActionEvent event) throws IOException {
@@ -261,19 +277,55 @@ public class PlayController extends Pane {
     protected void onComboBoxTriggered() throws Exception {
         String gmMode=GameMode.getValue();
         if(gmMode=="Human Vs Human"){
-            PlayMode=0;
+            //PlayMode=0;
+            return;
         } else if (gmMode=="Human Vs Engine") {
-            PlayMode=1;
-        } else if (gmMode=="Engine Vs Engine") {
-            while(PlayMode==2){
-                //Thread.sleep(1000);
-                ChessEngine Robot=new ChessEngine("D:/Documents/Collection/stockfish_15.1_win_x64_avx2/stockfish.exe");
-                Robot.setPosition(getFENForPresentGame());
-                String NextMove=Robot.getBestMove(1000);
-                System.out.println(NextMove);
-                //break;
-                //do next  best engine move
+            //PlayMode=1;
+            while(PlayMode==1)
+            {
+                if(Whotomove%2==0){return;}
+                else{
+                    System.out.println("Thinking");
+                    robot.setPosition(getFENForPresentGame());
+                    String netxmove=robot.getBestMove(1000);
+                    System.out.println(netxmove);
+                    int a,b,c,d;
+                    a='a'-netxmove.charAt(0);
+                    b=Character.getNumericValue(netxmove.charAt(1));
+                    c='a'-netxmove.charAt(2);
+                    d=Character.getNumericValue(netxmove.charAt(3));
+                    MakeMove(b,a,d,c);
+                    }
             }
+        } else if (gmMode=="Engine Vs Engine") {
+            //PlayMode=2;
+            while(PlayMode==2)
+            {
+                System.out.println("Thinking");
+                robot.setPosition(getFENForPresentGame());
+                String netxmove=robot.getBestMove(1000);
+                System.out.println(netxmove);
+                int a,b,c,d;
+                a='a'-netxmove.charAt(0);
+                b=Character.getNumericValue(netxmove.charAt(1));
+                c='a'-netxmove.charAt(2);
+                d=Character.getNumericValue(netxmove.charAt(3));
+                MakeMove(b,a,d,c);
+            }
+        }
+    }
+    public void MakeMove(int prow,int pcol,int nrow,int ncol){
+        PieceHolder[nrow][ncol].setImage(PieceHolder[prow][pcol].getImage());
+        PieceHolder[prow][pcol].setImage(null);
+        boardRep[nrow][ncol]=boardRep[prow][pcol];
+        boardRep[prow][pcol]='-';
+        Whotomove++;
+        if(Whotomove%2==0){
+            WhiteTurn.setSelected(true);
+            BlackTurn.setSelected(false);
+        } else {
+            WhiteTurn.setSelected(false);
+            BlackTurn.setSelected(true);
         }
     }
 }
