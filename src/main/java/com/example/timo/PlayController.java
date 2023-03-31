@@ -50,18 +50,18 @@ public class PlayController extends Pane {
     @FXML
     private Label madeMoveList;
     private final String[] pieceImages = {
-            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/whiteRook.png",
-            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/whiteKnight.png",
-            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/whiteBishop.png",
-            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/whiteQueen.png",
-            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/whiteKing.png",
-            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/whitePawn.png",
-            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/blackRook.png",
-            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/blackKnight.png",
-            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/blackBishop.png",
-            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/blackQueen.png",
-            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/blackKing.png",
-            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/Timo/src/main/pics/BlackPawn.png"
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/src/main/pics/whiteRook.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/src/main/pics/whiteKnight.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/src/main/pics/whiteBishop.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/src/main/pics/whiteQueen.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/src/main/pics/whiteKing.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/src/main/pics/whitePawn.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/src/main/pics/blackRook.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/src/main/pics/blackKnight.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/src/main/pics/blackBishop.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/src/main/pics/blackQueen.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/src/main/pics/blackKing.png",
+            "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/src/main/pics/BlackPawn.png"
     };
 
     public static String getFENForPresentGame() {
