@@ -22,6 +22,7 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.paint.Color;
 import java.io.IOException;
+import java.sql.SQLException;
 import javax.swing.*;
 
 public class PlayController extends Pane {
@@ -35,6 +36,7 @@ public class PlayController extends Pane {
     ChessEngine robot=null;
     private int PlayMode;
     private int startConst=0;
+    private int checks=0;
     @FXML
     private Button Back;
     @FXML
@@ -63,14 +65,13 @@ public class PlayController extends Pane {
             "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/src/main/pics/blackKing.png",
             "D:/Documents/Bachellors CSE/semester 4/CSE 4402 Visual Programming Lab/project/timo/src/main/pics/BlackPawn.png"
     };
-
     public static String getFENForPresentGame() {
         StringBuilder fen = new StringBuilder();
         for (int row = 0; row < 8; row++) {
             int emptySquares = 0;
             for (int col = 0; col < 8; col++) {
                 char piece = boardRep[row][col];
-                if (piece == '\0') {
+                if (piece == '-') {
                     emptySquares++;
                 } else {
                     if (emptySquares > 0) {
@@ -160,23 +161,8 @@ public class PlayController extends Pane {
         String gmMode=GameMode.getValue();
         if(gmMode=="Engine Vs Engine"){onComboBoxTriggered();return;}
         if(gmMode=="Human Vs Engine" && Whotomove%2==1){onComboBoxTriggered();return;}
-        if (boardRep[Row][Col] != '-') {
-            spirepiece[0] = Row;
-            spirepiece[1] = Col;
-            ChessPiece selectedPiece = new ChessPiece(PieceHolder[Row][Col].getImage(), Row, Col, boardRep[Row][Col]);
-            char[][] arrr = selectedPiece.getPossibleMoves(boardRep[Row][Col], Row, Col, boardRep);
-            for (int i = 0; i < BOARD_SIZE; i++) {
-                for (int j = 0; j < BOARD_SIZE; j++) {
-                    suggestedMove[i][j] = arrr[i][j];
-                    if (arrr[i][j] == '*') {
-                        stackPanes[i][j].setBorder(new Border(new BorderStroke(Color.GREEN, BorderStrokeStyle.DASHED, null, new BorderWidths(3))));
-                    }
-                }
-            }
-        } else {
-            if (spirepiece[0] != -1 && spirepiece[1] != -1) {
-                MakeMove(spirepiece[0],spirepiece[1],Row,Col);
-            }
+        if (spirepiece[0] != -1 && spirepiece[1] != -1 && suggestedMove[Row][Col]=='*') {
+            MakeMove(spirepiece[0],spirepiece[1],Row,Col);
             spirepiece[0] = -1;
             spirepiece[1] = -1;
             for (int i = 0; i < BOARD_SIZE; i++) {
@@ -187,8 +173,34 @@ public class PlayController extends Pane {
                     }
                 }
             }
+        } else {
+            if (boardRep[Row][Col] != '-') {
+                spirepiece[0] = Row;
+                spirepiece[1] = Col;
+                ChessPiece selectedPiece = new ChessPiece(PieceHolder[Row][Col].getImage(), Row, Col, boardRep[Row][Col]);
+                char[][] arrr = selectedPiece.getPossibleMoves(boardRep[Row][Col], Row, Col, boardRep);
+                for (int i = 0; i < BOARD_SIZE; i++) {
+                    for (int j = 0; j < BOARD_SIZE; j++) {
+                        suggestedMove[i][j] = arrr[i][j];
+                        if (arrr[i][j] == '*') {
+                            stackPanes[i][j].setBorder(new Border(new BorderStroke(Color.YELLOW, BorderStrokeStyle.DASHED, null, new BorderWidths(3))));
+                            if(boardRep[i][j]=='k'||boardRep[i][j]=='K'){
+                                checks++;
+                            }
+                        }
+                    }
+                }
+            } else {
+                spirepiece[0] = -1;
+                spirepiece[1] = -1;
+                for (int i = 0; i < BOARD_SIZE; i++) {
+                    for (int j = 0; j < BOARD_SIZE; j++) {
+                        stackPanes[i][j].setBorder(new Border(new BorderStroke(null, BorderStrokeStyle.NONE, null, null)));
+                        suggestedMove[i][j] = '-';
+                    }
+                }
+            }
         }
-        System.out.println();
         onComboBoxTriggered();
     }
     @FXML
@@ -246,10 +258,9 @@ public class PlayController extends Pane {
         }
         boolean bit= inQuire();
         if (bit) {
-            //DatabaseController StartInstance=new DatabaseController();
-            //StartInstance.GetPrevGame();
-            //String savedGame=StartInstance.GetPrevGame();
-            String savedGame = "8/4R2p/6pk/3P4/1P5q/5p2/r4P2/4QBK1 w - - 0 26";
+            DatabaseController StartInstance=new DatabaseController();
+            String savedGame=StartInstance.GetPrevGame();
+//            String savedGame = "8/4R2p/6pk/3P4/1P5q/5p2/r4P2/4QBK1 w - - 0 26";
             displayGame(savedGame);
         } else {
             String newGameString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -258,12 +269,11 @@ public class PlayController extends Pane {
         onComboBoxTriggered();
     }
     @FXML
-    protected void onBackButtonClick(ActionEvent event) throws IOException {
+    protected void onBackButtonClick(ActionEvent event) throws IOException, SQLException {
         System.out.println("Saving present game...");
-        //SaveThePresentGameString();
         String presentState=getFENForPresentGame();
-        //DatabaseController InstanceForStorage=new DatabaseController();
-        //InstanceForStorage.SavePresentGame(presentState);
+        DatabaseController InstanceForSave=new DatabaseController();
+        InstanceForSave.SavePresentGame(presentState,checks);
         System.out.println("Saving Game....................Done");
         System.out.println("Saved Game: "+ presentState);
         Parent root = FXMLLoader.load(getClass().getResource("Timo-view.fxml"));
@@ -295,7 +305,7 @@ public class PlayController extends Pane {
                     c='a'-netxmove.charAt(2);
                     d=Character.getNumericValue(netxmove.charAt(3));
                     MakeMove(b,a,d,c);
-                    }
+                }
             }
         } else if (gmMode=="Engine Vs Engine") {
             //PlayMode=2;
