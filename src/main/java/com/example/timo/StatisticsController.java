@@ -33,6 +33,7 @@ public class StatisticsController {
         while (rst.next()) {
             str = rst.getInt(1);
         }
+
         System.out.println(str);
         total.setText(Integer.toString(str));
         System.out.println(str);
