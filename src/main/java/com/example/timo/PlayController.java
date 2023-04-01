@@ -88,7 +88,6 @@ public class PlayController extends Pane {
                 fen.append('/');
             }
         }
-
         fen.append(' ');
         if(Whotomove%2==0){fen.append("w");}else {fen.append("b");}
         fen.append(" - - 0 26");
@@ -260,7 +259,6 @@ public class PlayController extends Pane {
         if (bit) {
             DatabaseController StartInstance=new DatabaseController();
             String savedGame=StartInstance.GetPrevGame();
-//            String savedGame = "8/4R2p/6pk/3P4/1P5q/5p2/r4P2/4QBK1 w - - 0 26";
             displayGame(savedGame);
         } else {
             String newGameString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
