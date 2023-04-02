@@ -32,8 +32,8 @@ public class ChessPiece extends ImageView {
             }
         }
         else if (piece == 'R' || piece == 'r') {
-            for (int i = 0; i < 8; i++) {
-                if (board[row][i] == '-' ) {
+            for (int i = col - 1; i >= 0; i--) {
+                if (board[row][i] == '-') {
                     possibleMoves[row][i] = '*';
                 } else if (Character.isLowerCase(board[row][i]) != Character.isLowerCase(piece)) {
                     possibleMoves[row][i] = '*';
@@ -42,8 +42,30 @@ public class ChessPiece extends ImageView {
                     break;
                 }
             }
-            for (int i = 0; i < 8; i++) {
-                if (board[i][col] == '-' ) {
+
+            for (int i = col + 1; i < 8; i++) {
+                if (board[row][i] == '-') {
+                    possibleMoves[row][i] = '*';
+                } else if (Character.isLowerCase(board[row][i]) != Character.isLowerCase(piece)) {
+                    possibleMoves[row][i] = '*';
+                    break;
+                } else {
+                    break;
+                }
+            }
+
+            for (int i = row - 1; i >= 0; i--) {
+                if (board[i][col] == '-') {
+                    possibleMoves[i][col] = '*';
+                } else if (Character.isLowerCase(board[i][col]) != Character.isLowerCase(piece)) {
+                    possibleMoves[i][col] = '*';
+                    break;
+                } else {
+                    break;
+                }
+            }
+            for (int i = row + 1; i < 8; i++) {
+                if (board[i][col] == '-') {
                     possibleMoves[i][col] = '*';
                 } else if (Character.isLowerCase(board[i][col]) != Character.isLowerCase(piece)) {
                     possibleMoves[i][col] = '*';
@@ -97,9 +119,9 @@ public class ChessPiece extends ImageView {
         }
         else if (piece == 'Q' || piece == 'q') {
             for (int i = 0; i < 8; i++) {
-                if (board[row][i] == '-') {
+                if (board[row][i] == '-' ) {
                     possibleMoves[row][i] = '*';
-                } else if (Character.isUpperCase(piece) != Character.isUpperCase(board[row][i])) {
+                } else if (Character.isLowerCase(board[row][i]) != Character.isLowerCase(piece)) {
                     possibleMoves[row][i] = '*';
                     break;
                 } else {
@@ -107,50 +129,113 @@ public class ChessPiece extends ImageView {
                 }
             }
             for (int i = 0; i < 8; i++) {
-                if (board[i][col] == '-') {
+                if (board[i][col] == '-' ) {
                     possibleMoves[i][col] = '*';
-                } else if (Character.isUpperCase(piece) != Character.isUpperCase(board[i][col])) {
+                } else if (Character.isLowerCase(board[i][col]) != Character.isLowerCase(piece)) {
                     possibleMoves[i][col] = '*';
                     break;
                 } else {
                     break;
                 }
             }
-            for (int i = 1; row+i < 8 && col+i < 8; i++) {
-                if (board[row+i][col+i] == '-') {
-                    possibleMoves[row+i][col+i] = '*';
-                } else if (Character.isUpperCase(piece) != Character.isUpperCase(board[row+i][col+i])) {
-                    possibleMoves[row+i][col+i] = '*';
+            for (int i = 1; i < 8; i++) {
+                if (row - i >= 0 && col - i >= 0) {
+                    if (board[row-i][col-i] == '-') {
+                        possibleMoves[row-i][col-i] = '*';
+                    } else if (Character.isLowerCase(board[row-i][col-i]) != Character.isLowerCase(piece)) {
+                        possibleMoves[row-i][col-i] = '*';
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+                if (row - i >= 0 && col + i < 8) {
+                    if (board[row-i][col+i] == '-') {
+                        possibleMoves[row-i][col+i] = '*';
+                    } else if (Character.isLowerCase(board[row-i][col+i]) != Character.isLowerCase(piece)) {
+                        possibleMoves[row-i][col+i] = '*';
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+                if (row + i < 8 && col - i >= 0) {
+                    if (board[row+i][col-i] == '-') {
+                        possibleMoves[row+i][col-i] = '*';
+                    } else if (Character.isLowerCase(board[row+i][col-i]) != Character.isLowerCase(piece)) {
+                        possibleMoves[row+i][col-i] = '*';
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+                if (row + i < 8 && col + i < 8) {
+                    if (board[row+i][col+i] == '-') {
+                        possibleMoves[row+i][col+i] = '*';
+                    } else if (Character.isLowerCase(board[row+i][col+i]) != Character.isLowerCase(piece)) {
+                        possibleMoves[row+i][col+i] = '*';
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        } if (piece == 'Q' || piece == 'q') {
+            for (int i = 0; i < 8; i++) {
+                if (board[row][i] == '-' ) {
+                    possibleMoves[row][i] = '*';
+                } else if (Character.isLowerCase(board[row][i]) != Character.isLowerCase(piece)) {
+                    possibleMoves[row][i] = '*';
                     break;
                 } else {
                     break;
                 }
             }
-            for (int i = 1; row+i < 8 && col-i >= 0; i++) {
-                if (board[row+i][col-i] == '-') {
-                    possibleMoves[row+i][col-i] = '*';
-                } else if (Character.isUpperCase(piece) != Character.isUpperCase(board[row+i][col-i])) {
-                    possibleMoves[row+i][col-i] = '*';
+            for (int i = 0; i < 8; i++) {
+                if (board[i][col] == '-' ) {
+                    possibleMoves[i][col] = '*';
+                } else if (Character.isLowerCase(board[i][col]) != Character.isLowerCase(piece)) {
+                    possibleMoves[i][col] = '*';
                     break;
                 } else {
                     break;
                 }
             }
-            for (int i = 1; row-i >= 0 && col+i < 8; i++) {
-                if (board[row-i][col+i] == '-') {
-                    possibleMoves[row-i][col+i] = '*';
-                } else if (Character.isUpperCase(piece) != Character.isUpperCase(board[row-i][col+i])) {
-                    possibleMoves[row-i][col+i] = '*';
+            for (int i = row-1, j = col-1; i >= 0 && j >= 0; i--, j--) {
+                if (board[i][j] == '-') {
+                    possibleMoves[i][j] = '*';
+                } else if (Character.isLowerCase(board[i][j]) != Character.isLowerCase(piece)) {
+                    possibleMoves[i][j] = '*';
                     break;
                 } else {
                     break;
                 }
             }
-            for (int i = 1; row-i >= 0 && col-i >= 0; i++) {
-                if (board[row-i][col-i] == '-') {
-                    possibleMoves[row-i][col-i] = '*';
-                } else if (Character.isUpperCase(piece) != Character.isUpperCase(board[row-i][col-i])) {
-                    possibleMoves[row-i][col-i] = '*';
+            for (int i = row+1, j = col+1; i < 8 && j < 8; i++, j++) {
+                if (board[i][j] == '-') {
+                    possibleMoves[i][j] = '*';
+                } else if (Character.isLowerCase(board[i][j]) != Character.isLowerCase(piece)) {
+                    possibleMoves[i][j] = '*';
+                    break;
+                } else {
+                    break;
+                }
+            }
+            for (int i = row-1, j = col+1; i >= 0 && j < 8; i--, j++) {
+                if (board[i][j] == '-') {
+                    possibleMoves[i][j] = '*';
+                } else if (Character.isLowerCase(board[i][j]) != Character.isLowerCase(piece)) {
+                    possibleMoves[i][j] = '*';
+                    break;
+                } else {
+                    break;
+                }
+            }
+            for (int i = row+1, j = col-1; i < 8 && j >= 0; i++, j--) {
+                if (board[i][j] == '-') {
+                    possibleMoves[i][j] = '*';
+                } else if (Character.isLowerCase(board[i][j]) != Character.isLowerCase(piece)) {
+                    possibleMoves[i][j] = '*';
                     break;
                 } else {
                     break;
@@ -158,78 +243,36 @@ public class ChessPiece extends ImageView {
             }
         }
         else if (piece == 'K' || piece == 'k') {
-            int[] dr = {-1, -1, 0, 1, 1, 1, 0, -1};
-            int[] dc = {0, 1, 1, 1, 0, -1, -1, -1};
-            for (int i = 0; i < 8; i++) {
-                int newRow = row + dr[i];
-                int newCol = col + dc[i];
-                if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
-                    char celll = board[newRow][newCol];
-                    if (celll == '-' || (Character.isLowerCase(piece) && Character.isUpperCase(celll)) || (Character.isUpperCase(piece) && Character.isLowerCase(piece))) {
-                        possibleMoves[newRow][newCol] = '*';
+            for (int i = -1; i <= 1; i++) {
+                for (int j = -1; j <= 1; j++) {
+                    if (i == 0 && j == 0) {
+                        continue;
                     }
-                }
-            }
-            if (Character.isUpperCase(piece)) {
-                if (board[7][5] == '-' && board[7][6] == '-' && board[7][7] == 'R') {
-                    if (board[7][4] == 'K' && board[7][7] == 'R') {
-                        possibleMoves[7][6] = '*';
-                    }
-                }
-                if (board[7][1] == '-' && board[7][2] == '-' && board[7][3] == '-' && board[7][0] == 'R') {
-                    if (board[7][4] == 'K' && board[7][0] == 'R') {
-                        possibleMoves[7][2] = '*';
-                    }
-                }
-            } else {
-                if (board[0][5] == '-' && board[0][6] == '-' && board[0][7] == 'r') {
-                    if (board[0][4] == 'k' && board[0][7] == 'r') {
-                        possibleMoves[0][6] = '*';
-                    }
-                }
-                if (board[0][1] == '-' && board[0][2] == '-' && board[0][3] == '-' && board[0][0] == 'r') {
-                    if (board[0][4] == 'k' && board[0][0] == 'r') {
-                        possibleMoves[0][2] = '*';
+                    int newRow = row + i;
+                    int newCol = col + j;
+                    if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+                        if (board[newRow][newCol] == '-' || Character.isLowerCase(board[newRow][newCol]) != Character.isLowerCase(piece)) {
+                            possibleMoves[newRow][newCol] = '*';
+                        }
                     }
                 }
             }
         }
         else if (piece == 'P' || piece == 'p') {
-            int dir = (Character.isUpperCase(piece)) ? -1 : 1;
-            int newRow = row + dir;
-            if (newRow >= 0 && newRow < 8 && board[newRow][col] == '-') {
-                possibleMoves[newRow][col] = '*';
-                if ((row == 6 && dir == -1) || (row == 1 && dir == 1)) {
-                    newRow = row + 2 * dir;
-                    if (board[newRow][col] == '-') {
-                        possibleMoves[newRow][col] = '*';
+            int direction = (piece == 'P') ? -1 : 1; // white or black pawn
+            if (row + direction >= 0 && row + direction < 8 && board[row + direction][col] == '-') {
+                possibleMoves[row + direction][col] = '*';
+                if ((row == 6 && direction == -1) || (row == 1 && direction == 1)) {
+                    if (board[row + 2 * direction][col] == '-') {
+                        possibleMoves[row + 2 * direction][col] = '*';
                     }
                 }
             }
-            int[] dc = {-1, 1};
-            for (int i = 0; i < 2; i++) {
-                int newCol = col + dc[i];
-                if (newCol >= 0 && newCol < 8) {
-                    char tpiece = board[row + dir][newCol];
-                    if (tpiece != '-' && (Character.isLowerCase(piece) && Character.isUpperCase(tpiece) || Character.isUpperCase(piece) && Character.isLowerCase(tpiece))) {
-                        possibleMoves[piece + dir][newCol] = '*';
-                    }
-                }
+            if (col - 1 >= 0 && row + direction >= 0 && row + direction < 8 && Character.isLowerCase(board[row + direction][col - 1]) != Character.isLowerCase(piece)) {
+                possibleMoves[row + direction][col - 1] = '*';
             }
-            if (row == ((Character.isUpperCase(piece)) ? 3 : 4)) {
-                int[] dc1 = {-1, 1};
-                for (int i = 0; i < 2; i++) {
-                    int newCol = col + dc1[i];
-                    if (newCol >= 0 && newCol < 8) {
-                        char tpiece = board[row][newCol];
-                        if (tpiece == ((Character.isUpperCase(piece)) ? 'p' : 'P')) {
-                            char prevMove = board[row][newCol] == 'p' ? board[row - 1][newCol] : board[row + 1][newCol];
-                            if (prevMove == 'm') {
-                                possibleMoves[row + dir][newCol] = '*';
-                            }
-                        }
-                    }
-                }
+            if (col + 1 < 8 && row + direction >= 0 && row + direction < 8 && Character.isLowerCase(board[row + direction][col + 1]) != Character.isLowerCase(piece)) {
+                possibleMoves[row + direction][col + 1] = '*';
             }
         }
         return possibleMoves;
