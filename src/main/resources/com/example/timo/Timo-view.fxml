@@ -15,11 +15,26 @@
          <Font size="56.0" />
       </font>
    </Label>
-   <Label fx:id="ChessText" prefHeight="32.0" prefWidth="31.0" text="chess" textAlignment="CENTER" />
+   <Label fx:id="ChessText" prefHeight="32.0" prefWidth="40.0" text="chess" textAlignment="CENTER">
+      <font>
+         <Font name="System Italic" size="14.0" />
+      </font></Label>
 
     <Label fx:id="welcomeText" />
-    <Button id="Play" fx:id="Play" onAction="#onPlayButtonClick" prefHeight="25.0" prefWidth="153.0" text="Play" />
-   <Button id="Statistics" fx:id="Statistics" mnemonicParsing="false" onAction="#onStatisticsButtonClick" prefHeight="25.0" prefWidth="155.0" text="statistics" />
-   <Button id="How_To_Play" fx:id="How_To_Play" mnemonicParsing="false" onAction="#onHowToPlayButtonClick" prefHeight="25.0" prefWidth="153.0" text="How to Play" />
-   <Button id="About" fx:id="About" mnemonicParsing="false" onAction="#onAboutButtonClick" prefHeight="25.0" prefWidth="154.0" text="About" />
+    <Button id="Play" fx:id="Play" onAction="#onPlayButtonClick" prefHeight="25.0" prefWidth="153.0" text="Play">
+      <font>
+         <Font name="Algerian" size="12.0" />
+      </font></Button>
+   <Button id="Statistics" fx:id="Statistics" mnemonicParsing="false" onAction="#onStatisticsButtonClick" prefHeight="25.0" prefWidth="155.0" text="statistics">
+      <font>
+         <Font name="Algerian" size="13.0" />
+      </font></Button>
+   <Button id="How_To_Play" fx:id="How_To_Play" mnemonicParsing="false" onAction="#onHowToPlayButtonClick" prefHeight="25.0" prefWidth="153.0" text="How to Play">
+      <font>
+         <Font name="Algerian" size="13.0" />
+      </font></Button>
+   <Button id="About" fx:id="About" mnemonicParsing="false" onAction="#onAboutButtonClick" prefHeight="25.0" prefWidth="154.0" text="About">
+      <font>
+         <Font name="Algerian" size="13.0" />
+      </font></Button>
 </VBox>
