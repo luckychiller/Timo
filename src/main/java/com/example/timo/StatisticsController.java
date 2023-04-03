@@ -16,7 +16,6 @@ public class StatisticsController {
     private Stage stage;
     private Scene scene;
     private Parent root;
-
     @FXML
     private Button Refresh=new Button();
     @FXML

@@ -16,23 +16,19 @@ public class ChessEngine {
         sendCommand("isready");
         waitForOutput("readyok");
     }
-
     public void setPosition(String fen) throws Exception {
         sendCommand("position fen " + fen);
     }
-
     public String getBestMove(int searchTime) throws Exception {
         sendCommand("go movetime " + searchTime);
         String outputString = waitForOutput("bestmove");
         String[] tokens = outputString.split("\\s+");
         return tokens[1];
     }
-
     private void sendCommand(String command) throws Exception {
         output.write(command + NEWLINE);
         output.flush();
     }
-
     private String waitForOutput(String expectedOutput) throws Exception {
         String outputString = "";
         while (outputString == null || !outputString.startsWith(expectedOutput)) {

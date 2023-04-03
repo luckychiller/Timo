@@ -118,6 +118,7 @@ public class PlayController extends Pane {
         for(int i=0;i<BOARD_SIZE;i++){
             for(int j=0;j<BOARD_SIZE;j++){
                 PieceHolder[i][j].setImage(null);
+                boardRep[i][j]='-';
             }
         }
         for (int i = 0; i < BOARD_SIZE; i++) {
